@@ -1,4 +1,4 @@
-package com.techyourchance.coroutines.demonstrations.uithread
+package com.test.mycoroutineapp_1.coroutines.demonstrations.coroutinescancellation
 
 import android.os.Bundle
 import android.os.Handler
@@ -14,13 +14,17 @@ import com.techyourchance.coroutines.common.BaseFragment
 import com.techyourchance.coroutines.common.ThreadInfoLogger
 import com.techyourchance.coroutines.home.ScreenReachableFromHome
 import com.test.mycoroutineapp_1.R
+import kotlinx.coroutines.*
 
-class UiThreadDemoFragment : BaseFragment() {
+class CoroutinesCancellationDemoFragment : BaseFragment() {
 
-    override val screenTitle get() = ScreenReachableFromHome.UI_THREAD_DEMO.description
+    private val coroutineScope = CoroutineScope(Dispatchers.Main.immediate)
+    override val screenTitle get() = ScreenReachableFromHome.COROUTINES_CANCELLATION_DEMO.description
 
     private lateinit var btnStart: Button
     private lateinit var txtRemainingTime: TextView
+
+    private var job: Job? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_loop_iterations_demo, container, false)
@@ -30,31 +34,45 @@ class UiThreadDemoFragment : BaseFragment() {
         btnStart = view.findViewById(R.id.btn_start)
         btnStart.setOnClickListener {
             logThreadInfo("button callback")
-            btnStart.isEnabled = false
-            executeBenchmark()
-            btnStart.isEnabled = true
+
+            job = coroutineScope.launch {
+                btnStart.isEnabled = false
+                val iterationsCount = executeBenchmark()
+                Toast.makeText(requireContext(), "$iterationsCount", Toast.LENGTH_SHORT).show()
+                btnStart.isEnabled = true
+            }
+
         }
 
         return view
     }
 
-    private fun executeBenchmark() {
+    override fun onStop() {
+        logThreadInfo("onStop()")
+        super.onStop()
+        job?.cancel()
+        btnStart.isEnabled = true
+    }
+
+    private suspend fun executeBenchmark(): Long {
         val benchmarkDurationSeconds = 5
 
         updateRemainingTime(benchmarkDurationSeconds)
 
-        logThreadInfo("benchmark started")
+        return withContext(Dispatchers.Default) {
+            logThreadInfo("benchmark started")
 
-        val stopTimeNano = System.nanoTime() + benchmarkDurationSeconds * 1_000_000_000L
+            val stopTimeNano = System.nanoTime() + benchmarkDurationSeconds * 1_000_000_000L
 
-        var iterationsCount: Long = 0
-        while (System.nanoTime() < stopTimeNano) {
-            iterationsCount++
+            var iterationsCount: Long = 0
+            while (System.nanoTime() < stopTimeNano) {
+                iterationsCount++
+            }
+
+            logThreadInfo("benchmark completed")
+
+            iterationsCount
         }
-
-        logThreadInfo("benchmark completed")
-
-        Toast.makeText(requireContext(), "$iterationsCount", Toast.LENGTH_SHORT).show()
     }
 
     private fun updateRemainingTime(remainingTimeSeconds: Int) {
@@ -77,7 +95,7 @@ class UiThreadDemoFragment : BaseFragment() {
 
     companion object {
         fun newInstance(): Fragment {
-            return UiThreadDemoFragment()
+            return CoroutinesCancellationDemoFragment()
         }
     }
 }
