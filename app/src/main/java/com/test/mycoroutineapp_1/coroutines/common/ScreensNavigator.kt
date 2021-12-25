@@ -12,6 +12,7 @@ import com.test.mycoroutineapp_1.coroutines.demonstrations.concurrentcoroutines.
 import com.test.mycoroutineapp_1.coroutines.demonstrations.coroutinescancellation.CoroutinesCancellationDemoFragment
 import com.test.mycoroutineapp_1.coroutines.demonstrations.scopechildrencancellation.ScopeChildrenCancellationDemoFragment
 import com.test.mycoroutineapp_1.coroutines.exercises.exercise2.Exercise2Fragment
+import com.test.mycoroutineapp_1.coroutines.exercises.exersise3.Exercise3Fragment
 
 class ScreensNavigator(private val fragNavController: FragNavController) {
 
@@ -81,5 +82,7 @@ class ScreensNavigator(private val fragNavController: FragNavController) {
         fragNavController.pushFragment(ScopeChildrenCancellationDemoFragment.newInstance())
     }
 
-
+    fun toExercise3() {
+        fragNavController.pushFragment(Exercise3Fragment.newInstance())
+    }
 }
