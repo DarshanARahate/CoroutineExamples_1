@@ -12,6 +12,7 @@ import com.test.mycoroutineapp_1.coroutines.demonstrations.concurrentcoroutines.
 import com.test.mycoroutineapp_1.coroutines.demonstrations.coroutinescancellation.CoroutinesCancellationDemoFragment
 import com.test.mycoroutineapp_1.coroutines.demonstrations.scopecancellation.ScopeCancellationDemoFragment
 import com.test.mycoroutineapp_1.coroutines.demonstrations.scopechildrencancellation.ScopeChildrenCancellationDemoFragment
+import com.test.mycoroutineapp_1.coroutines.demonstrations.viewmodel.ViewModelDemoFragment
 import com.test.mycoroutineapp_1.coroutines.exercises.exercise2.Exercise2Fragment
 import com.test.mycoroutineapp_1.coroutines.exercises.exersise3.Exercise3Fragment
 
@@ -90,4 +91,9 @@ class ScreensNavigator(private val fragNavController: FragNavController) {
     fun toScopeCancellation() {
         fragNavController.pushFragment(ScopeCancellationDemoFragment.newInstance())
     }
+
+    fun toViewModel() {
+        fragNavController.pushFragment(ViewModelDemoFragment.newInstance())
+    }
+
 }
