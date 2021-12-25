@@ -9,6 +9,7 @@ import com.techyourchance.coroutines.demonstrations.uithread.UiThreadDemoFragmen
 import com.techyourchance.coroutines.exercises.exercise1.Exercise1SolutionFragment
 import com.techyourchance.coroutines.home.HomeFragment
 import com.test.mycoroutineapp_1.coroutines.demonstrations.coroutinescancellation.CoroutinesCancellationDemoFragment
+import com.test.mycoroutineapp_1.coroutines.exercises.exercise2.Exercise2Fragment
 
 class ScreensNavigator(private val fragNavController: FragNavController) {
 
@@ -66,5 +67,7 @@ class ScreensNavigator(private val fragNavController: FragNavController) {
         fragNavController.pushFragment(CoroutinesCancellationDemoFragment.newInstance())
     }
 
-
+    fun toExercise2() {
+        fragNavController.pushFragment(Exercise2Fragment.newInstance())
+    }
 }
