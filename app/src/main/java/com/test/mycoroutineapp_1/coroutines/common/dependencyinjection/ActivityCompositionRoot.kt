@@ -6,6 +6,7 @@ import com.techyourchance.coroutines.common.ScreensNavigator
 import com.techyourchance.coroutines.common.ToolbarDelegate
 import com.techyourchance.coroutines.exercises.exercise1.GetReputationEndpoint
 import com.test.mycoroutineapp_1.R
+import com.test.mycoroutineapp_1.coroutines.demonstrations.design.BenchmarkUseCase
 
 class ActivityCompositionRoot(
         private val activity: FragmentActivity,
@@ -24,4 +25,5 @@ class ActivityCompositionRoot(
 
     val getReputationEndpoint get() = GetReputationEndpoint()
 
+    val benchmarkUseCase get() = BenchmarkUseCase()
 }
